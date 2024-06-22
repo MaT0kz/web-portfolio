@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Вакансия</title>
+	</head>
+	<body>
+        <header class="personprofile-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            <button class="share">Поделиться</button>
+            <a class="home" href="{{ url_for('profile', unique_user_id=user.unique_id) }}">
+                <img src="{{ url_for('static', filename='static_images/home.svg') }}" width="57" height="46" alt="Домой">
+            </a>	
+        </header>
+        <main class="personprofile-main">
+            <div style="margin: 0 auto; display: flex;">
+                <form action="" method="POST" enctype="multipart/form-data">
+                {% if current_user.is_authenticated and current_user == user %}
+                    {{ form.hidden_tag() }}
+                {% endif %}
+                <div class="account">
+                    <div class="personal">
+                        <div class="information">
+                            <h1>{{ vacancy.name }}</h1>
+                            <h3>Отрасль</h3>
+                            {% if current_user.is_authenticated and current_user == user %}
+                                {{ form.sphere(class="industry", placeholder=vacancy.sphere) }}
+                                <h4>О вакансии:</h4>
+                                {{ form.about(class="about-me", value=vacancy.about) }}
+                                <h4>Требования к вакансии</h4>
+                                {{ form.requirements(class="about-me", placeholder=vacancy.requirements) }}
+                            {% else %}
+                                <p class="industry">{{ vacancy.sphere }}</p>
+                                <h4>О вакансии:</h4>
+                                <p class="about-me">{{ vacancy.about }}</p>
+                                <h4>Требования к вакансии</h4>
+                                <p>{{ vacancy.requirements }}</p>
+                            {% endif %}
+                            <img src="{{ url_for('static', filename='static_images/vacancy-preview.jpg') }}" width="456" height="378" alt="Превью вакансии">
+                            <a href="{{ url_for('profile', unique_user_id=user.unique_id) }}" style="background-color: black; color: white; padding: 5px 10px; border-radius: 7px;">К профилю</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <aside class="menu">
+                <h4>Меню</h4>
+                <ul class="menu-list">
+                    <li class="menu-list-item major">
+                        <a href="{{ url_for('main_page_portfolio') }}">Главная</a>
+                    </li>
+                    <li class="menu-list-item pickup">
+                        <figure class="help">
+                            <p>Поддержка</p>
+                            <p class="full-help">Текст</p>
+                        </figure>
+                    </li>
+                </ul>
+            </aside>
+            </div>
+        </main>
+        <footer class="personprofile-footer">
+            <div class="us">
+                <p class="site">Сайт</p>
+                <ul class="social-list">
+                   <li class="social-list-item facebook">
+                        <a href="#"><img src="{{ url_for('static', filename='static_images/facebook.svg') }}" width="20" height="20" alt="facebook"></a>
+                    </li>
+                    <li class="social-list-item in">
+                        <a href="#"><img src="{{ url_for('static', filename='static_images/in.svg') }}" width="18" height="18" alt="in"></a>
+                    </li>
+                    <li class="social-list-item youtube">
+                        <a href="#"><img src="{{ url_for('static', filename='static_images/youtube.svg') }}" width="20" height="14" alt="youtube"></a>
+                    </il>
+                    <li class="social-list-item instagram">
+                        <a href="#"><img src="{{ url_for('static', filename='static_images/instagram.svg') }}" width="20" height="20" alt="instagram"></a>
+                    </il>
+                </ul>
+            </div>
+            <section class="links">
+                <div>
+                    <p>Тема</p>
+                    <ul>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                    </ul>
+                </div>
+                <div>
+                    <p>Тема</p>
+                    <ul>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                    </ul>
+                </div>
+                <div>
+                    <p>Тема</p>
+                    <ul>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </li>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                        <li>
+                            <a href="#">Страница</a>
+                        </il>
+                    </ul>
+                </div>
+            </section>
+        </footer>
+    </body>
+</html>

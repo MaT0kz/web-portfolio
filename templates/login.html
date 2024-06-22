@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Вход</title>
+	</head>
+	<body>
+        <header class="inter-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            <a class="back" href="{{ url_for('main_page_portfolio') }}">Назад</a>
+        </header>
+        <main class="inter-main">
+            <form class="container" action="" method="POST">
+                {{ form.hidden_tag() }}
+                <h1>Вход</h1>
+                <h2>Логин:</h2>
+                {{ form.login(class="login", id="login", required=True, type="text", placeholder="Natashochka///_:33") }}
+                <h2>Пароль:</h2>
+                {{ form.password(class="password", id="password", required=True, type="text", value="") }}
+                {{ form.submit(class="create-profile", value="Далее") }}
+                {{ message }}
+            </form>
+        </main>
+    </body>
+</html>

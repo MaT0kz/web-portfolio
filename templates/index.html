@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400..500&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Главная</title>
+	</head>
+	<body>
+        <header class="main-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+			{% if current_user.is_authenticated %}
+                {% if current_user.avatar_path %}
+                    <a class="index-avatar" href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}"><img class="avatar" src="{{ url_for('static', filename=current_user.avatar_path) }}" width="40" height="40"></a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                {% else %}
+                    <a class="index-avatar" href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}"><img class="avatar" src="{{ url_for('static', filename='static_images/unauthorised.jpg') }}" width="40" height="40"></a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                {% endif %}
+            {% else %}
+			    <a class="inter" href="{{ url_for('login') }}">Войти</a>
+            {% endif %}
+        </header>
+        <main class="main">
+            <div class="container">
+                <h1>
+                    <p class="h1-part1">Заинтересовать работадателя? - легко!</p>
+                    <p class="h1-part2">Присоединяйся к сообществу профессионалов <br> своего дела -><a href="{{ url_for('register') }}">К анкете!</a></p>
+                </h1>
+                <a href="{{ url_for('scroll') }}"><img class="portfolio-view" src="{{ url_for('static', filename='static_images/screen-scroll.png') }}" width=100% height=auto alt="Галерея портфолио"></a>
+                <section class="about-service">
+                    <h2>Почему мы?</h2>
+                    <h3>Удобно</h3>
+                    <p>Мы предоставляем простой, интуитивно понятный сервис, где разместить, наблюдать, отслеживать и презентовать другим своё портфолио может абсолютно каждый!</p>
+                    <h3>Информативно</h3>
+                    <p>Не стоит задумываться о популярности своего портфолио и отслеживать в ручную, затрачивая на это огромное количество времени. Мы сделаем это за вас и сразу покажем вам, отобразив каждое изменение!</p>
+                    <h3>Узнаваемо</h3>
+                    <p>Не сомневайтесь, мы сделаем всё, чтобы ваше портфолио увидело как можно больше заинтересованных людей</p>
+                </section>
+                <section class="registration-link">
+                    <a href="{{ url_for('register') }}">Создать портфолио!</a>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

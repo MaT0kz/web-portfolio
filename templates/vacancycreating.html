@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Создание проекта</title>
+	</head>
+	<body>
+        <header class="vacancycreating-header">
+			<a class="back" href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}">Назад</a>
+        </header>
+        <main class="vacancycreating-main">
+            <form class="container" method="post" action="">
+                {{ form.hidden_tag() }}
+                {% if current_user.role == "person" %}
+                    <div class="information">
+                        <div>
+                            <h1>Создание резюме</h1>
+                            <h2>Наименование должности</h2>
+                            {{ form.name(class="name", placeholder="Название резюме") }}
+                            <h2>Отрасль</h2>
+                            {{ form.sphere(class="industry", placeholder="Название отрасли") }}
+                            <h2>Стаж</h2>
+                            {{ form.experience(class="industry", placeholder="Стаж") }}
+                            <h2>Краткое описание</h2>
+                            {{ form.about(class="industry", placeholder="Описание резюме") }}
+                        </div>
+                        {{ form.submit(class="save", value="Создать резюме") }}
+                    </div>
+                {% elif current_user.role == "organisation" %}
+                    <div class="information">
+                        <h1>Создание вакансии</h1>
+                        <h2>Наименование должности</h2>
+                        {{ form.name(class="name", placeholder="Название вакансии") }}
+                        <h2>Отрасль</h2>
+                        {{ form.sphere(class="industry", placeholder="Название отрасли") }}
+                        <h2>Стаж</h2>
+                        {{ form.experience(class="industry", placeholder="Стаж") }}
+                        <h2>Краткое описание</h2>
+                        {{ form.about(class="industry", placeholder="Описание вакансии") }}
+                        <h2>Требования</h2>
+                        {{ form.requirements(class="description", placeholder="Требования к вакансии") }}
+                        {{ form.submit(class="save", placeholder="Создать вакансию") }}
+                    </div>
+                {% endif %}
+                <div class="divcover">
+                    <img class="cover" src="{{ url_for('static', filename='static_images/cover.svg') }}" width="398" height="343" alt="Обложка проекта">
+                    <button class="add-cover">+ Добавить обложку</button>
+                </div>
+            </form>
+        </main>
+    </body>
+</html>
