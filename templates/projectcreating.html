@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Создание проекта</title>
+	</head>
+	<body>
+        <header class="projectcreating-header">
+			<a class="back" href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}">Назад</a>
+        </header>
+        <main class="projectcreating-main">
+            <form class="container" action="" method="POST" enctype="multipart/form-data">
+                {{ project.hidden_tag() }}
+                <div class="information">
+                    <h1>Создание проекта</h1>
+                    <div class="short-information">
+                        <div class="divname">
+                            <h2>Имя проекта</h2>
+                            {{ project.name(class="name") }}
+                        </div>
+                        <div>
+                            <h2>Отрасль</h2>
+                            {{ project.sphere(class="industry") }}
+                        </div>
+                    </div>
+                    <h2>Описание проекта</h2>
+                    {{ project.about(class="description") }}
+                    <h2>Приложите файлы</h2>
+                    <p class="files">+ Добавить файлы (pdf, png, jpg, dox, net...)</p>
+                    {{ project.submit(class="save") }}
+                </div>
+                <div class="divcover">
+                    <img class="cover" src="{{ url_for('static', filename='static_images/cover.svg') }}" width="398" height="343" alt="Обложка проекта">
+                    {{ project.photo(class="add-cover") }}
+                </div>
+            </form>
+        </main>
+    </body>
+</html>

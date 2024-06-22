@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Профиль соискателя</title>
+	</head>
+	<body>
+        <header class="personprofile-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            <a class="home" href="organisationprofile.html">
+                <img src="{{ url_for('static', filename='static_images/home.svg') }}" width="57" height="46" alt="Домой">
+            </a>	
+        </header>
+        <main class="personprofile-main">
+            <form class="container" action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+                <div class="account">
+                    <div class="personal">
+                        <div class="avatar">
+                            {% if user.avatar_path %}
+                                <img src="{{ url_for('static', filename=user.avatar_path) }}" width="355" height="355" alt="Фото профиля">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='static_images/unauthorised.jpg') }}" width="355" height="355" alt="Фото профиля">
+                            {% endif %}
+                            {% if current_user.is_authenticated and current_user == user %}
+                                {{ form.photo }}
+                                {{ form.submit(class="edit") }}
+                            {% endif %}
+                        </div>
+                        <div class="information">
+                            <h1>{{ user.name }} {{ user.surname }}</h1>
+                            {% if current_user.is_authenticated and current_user == user %}
+                                <h3>Отрасль</h3>
+                                {{ form.sphere(class="industry org-info", placeholder=user.sphere) }}
+                                <h3>Стаж</h3>
+                                {{ form.experience(class="experience org-info", placeholder=user.experience) }}
+                                <h4>Обо мне:</h4>
+                                {{ form.about(class="about-me org-info", value=user.about) }}
+                            {% else %}
+                                <h3>Отрасль</h3>
+                                <p class="industry">{{ user.sphere }}</p>
+                                <h3>Стаж</h3>
+                                <p class="experience">{{ user.experience }}</p>
+                                <h4>Обо мне:</h4>
+                                <p class="about-me">{{ user.about }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <section class="projects">
+                        <div class="title">
+                            <h2>Мои проекты</h2>
+                            {% if current_user.is_authenticated and current_user == user %}
+                                <a class="creating" href="{{ url_for('profile_add_project', unique_user_id=current_user.unique_id) }}">+</a>
+                            {% endif %}
+                        </div>
+                        <ul>
+                            {% for project in project_list %}
+                                <li class="project">
+                                    <a href="{{ url_for('project', unique_user_id=user.unique_id, project_id=project.id) }}">
+                                        <h3>{{ project.name }}</h3>
+                                        <p>{{ project.about }}</p>
+                                    </a>
+                                    <img src="{{ url_for('static', filename='static_images/grafic.svg') }}" width="245" height="148" alt="График">
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+                <div class="vacancies-main">
+                    <div class="title">
+                        <h1>Резюме</h1>
+                        {% if current_user.is_authenticated and current_user == user %}
+                            <a class="add" href="{{ url_for('add_vacancy_profile', unique_id=user.unique_id) }}">+</a>
+                        {% endif %}
+                    </div>
+                    <ul class="vacancies-list">
+                        {% for resume in resumies %}
+                            <li class="vacancies-list-item">
+                                <a class="vacancy" href="{{ url_for('resume', id=resume.id) }}">
+                                    <div class="text">
+                                        <h2>{{ resume.name }}</h2>
+                                        <p class="hidden">{{ resume.about }}</p>
+                                        <h3 class="hidden">Требования</h3>
+                                        <p class="hidden">{{ resume.requirements }}</p>
+                                    </div>
+                                    <div class="img">
+                                        <img class="hidden-img" src="{{ url_for('static', filename='static_images/vacancy-preview.jpg') }}" width="456" height="378" alt="Превью вакансии">
+                                        <button class="hidden">Отправить портфолио</button>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </main>
+        <footer class="personprofile-footer"></footer>
+        <script src="{{ url_for('static', filename='js/script-vacancies.js') }}"></script>
+    </body>
+</html>

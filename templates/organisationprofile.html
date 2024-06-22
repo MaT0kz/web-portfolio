@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Профиль работодателя</title>
+	</head>
+	<body>
+        <header class="organisationprofile-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            <a class="home" href="{{ url_for('main_page_portfolio') }}">
+                <img src="{{ url_for('static', filename='static_images/home.svg') }}" width="57" height="46" alt="Домой">
+            </a>	
+        </header>
+        <main class="personprofile-main">
+            <form class="container" action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+                <div class="personal">
+                    <div class="divavatar">
+                        {% if organisation.avatar_path %}
+                            <img class="avatar" src="{{ url_for('static', filename=organisation.avatar_path) }}" width="355" height="323" alt="Фото профиля">
+                        {% else %}
+                            <img class="avatar" src="{{ url_for('static', filename='static_images/unauthorised.jpg') }}" width="355" height="323" alt="Фото профиля">
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if current_user.is_authenticated and current_user == organisation %}
+                            {{ form.hidden_tag() }}
+                            {{ form.name(class="org-info", placeholder=organisation.name) }}
+                            <h3>Сфера деятельности</h3>
+                            {{ form.sphere(class="industry org-info", placeholder=organisation.sphere) }}
+                            <h3>Ссылки на соглашения</h3>
+                            {{ form.links(class="links-agreements org-info") }}
+                            {{ form.photo() }}
+                            {{ form.submit(class="edit") }}
+                        {% else %}
+                            <h1>{{ organisation.name }}</h1>
+                            <h3>Сфера деятельности</h3>
+                            <p class="industry">{{ organisation.sphere }}</p>
+                            <h3>Ссылки на соглашения</h3>
+                            <p class="links-agreements">IT-технологии</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <section class="about-organisation">
+                    <h2>Об организации</h2>
+                    {% if current_user.is_authenticated and current_user == organisation %}
+                        {{ form.about(placeholder=organisation.about) }}
+                    {% else %}
+                        <p class="about" style="width: 100%; height: 200px; font-size: 20px;">{{ organisation.about }}</p>
+                    {% endif %}
+                </section>
+                <div class="vacancies-main">
+                    <div class="title">
+                        <h1>Вакансии</h1>
+                        {% if current_user.is_authenticated and current_user == organisation %}
+                            <a class="add" href="{{ url_for('add_vacancy_profile', unique_id=organisation.unique_id) }}">+</a>
+                        {% endif %}
+                    </div>
+                    <ul class="vacancies-list">
+                        {% for vacancy in vacancies %}
+                            <li class="vacancies-list-item">
+                                <a class="vacancy" href="{{ url_for('vacancy', id=vacancy.id) }}">
+                                    <div class="text">
+                                        <h2>{{ vacancy.name }}</h2>
+                                        <p class="hidden">{{ vacancy.about }}</p>
+                                        <h3 class="hidden">Требования</h3>
+                                        <p class="hidden">{{ vacancy.requirements }}</p>
+                                    </div>
+                                    <div class="img">
+                                        <img class="hidden-img" src="{{ url_for('static', filename='static_images/vacancy-preview.jpg') }}" width="456" height="378" alt="Превью вакансии">
+                                        <button class="hidden">Отправить портфолио</button>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </main>
+        <footer class="organisationprofile-footer"></footer>
+        <script src="{{ url_for('static', filename='js/script-vacancies.js') }}"></script>
+    </body>
+</html>

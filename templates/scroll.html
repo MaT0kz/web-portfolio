@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?famliy=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Лента</title>
+	</head>
+	<body>
+        <header class="scroll-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            {% if current_user.is_authenticated %}
+                {% if current_user.avatar_path %}
+                    <a href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}"><img class="avatar" src="{{ url_for('static', filename=current_user.avatar_path) }}" width="40" height="40" alt="Фото профиля"></a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                {% else %}
+                    <a href="{{ url_for('profile', unique_user_id=current_user.unique_id) }}"><img class="avatar" src="{{ url_for('static', filename='static_images/unauthorised.jpg') }}" width="40" height="40" alt="Фото профиля"></a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                {% endif %}
+            {% else %}
+			    <a class="inter" href="{{ url_for('login') }}">Войти</a>
+            {% endif %}
+        </header>
+        <main class="scroll-main">
+            <form class="container" action="{{ url_for('scroll') }}" method="POST">
+                <div class="feed">
+                    {% if current_user.is_authenticated and current_user.role == "person" %}
+                        <h1>Галерея вакансий</h1>
+                    {% elif current_user.is_authenticated and current_user.role == "organisation" %}
+                        <h1>Галерея резюме</h1>
+                    {% endif %}
+                    {{ form.hidden_tag() }}
+                    {{ form.search(class="search", placeholder="Поиск") }}
+                    <ul class="portfolio-list">
+                        {% for profile in profiles %}
+                            <li class="portfolio-list-item">
+                                {% if profile.__class__.__name__ == 'User' %}
+                                    {% if profile.avatar_path %}
+                                        <img src="{{ url_for('static', filename=profile.avatar_path) }}" width="189" height="185" alt="Фото профиля">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='static_images/unauthorised.jpg') }}" width="189" height="185" alt="Фото профиля">
+                                    {% endif %}
+                                    {% if profile.role == 'person' %}
+                                        <div class="candidate-information">
+                                            <h2>{{ profile.name }} {{ profile.surname }}</h2>
+                                            <p>Сфера: {{ profile.sphere }}<br>Опыт работы: {{ profile.experience }}</p>
+                                            <a href="{{ url_for('profile', unique_user_id=profile.unique_id) }}">Смотреть</a>
+                                        </div>
+                                    {% elif profile.role == 'organisation' %}
+                                        <div class="candidate-information">
+                                            <h2>Организация: {{ profile.name }}</h2>
+                                            <p>Сфера: {{ profile.sphere }}<br>Об организации: {{ profile.about }}</p>
+                                            <a href="{{ url_for('profile', unique_user_id=profile.unique_id) }}">Смотреть</a>
+                                        </div>
+                                    {% endif %}
+                                {% elif profile.__class__.__name__ == 'Vacancy' %}
+                                    <div class="candidate-information">
+                                        <h2>Вакансия: {{ profile.name }}</h2>
+                                        <p>Сфера: {{ profile.sphere }}<br>Описание: {{ profile.about }}</p>
+                                        <a href="{{ url_for('vacancy', id=profile.id) }}">Смотреть</a>
+                                    </div>
+                                {% elif profile.__class__.__name__ == 'Resume' %}
+                                    <div class="candidate-information">
+                                        <h2>Резюме: {{ profile.name }}</h2>
+                                        <p>Сфера: {{ profile.sphere }}<br>Описание: {{ profile.about }}</p>
+                                        <a href="{{ url_for('resume', id=profile.id) }}">Смотреть</a>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button class="more"></button>
+                </div>
+                <div class="out-feed">
+                    <aside class="menu">
+                        <h4>Меню</h4>
+                        <ul class="menu-list">
+                            <li class="menu-list-item major">
+                                <a href="{{ url_for('main_page_portfolio') }}">Главная</a>
+                            </li>
+                            <li class="menu-list-item filter">
+                                <a class="filter-button" href="#">Фильтр</a>
+                                <div class="hidden">
+                                    <ul class="filter-list">
+                                        <li class="filter-list-item">
+                                            <h5>Стаж работы:</h5>
+                                            {{ form.experience(id="experience", type="text") }}
+                                        </li>
+                                        <li class="filter-list-item">
+                                            <h5>Сфера деятельности:</h5>
+                                            {{ form.sphere(id="sphere", type="text") }}
+                                        </li>
+                                    </ul>
+                                    {{ form.submit() }}
+                                </div>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+            </form>
+        </main>
+        <script src="{{ url_for('static', filename='js/script-scroll.js') }}"></script>
+    </body>
+</html>

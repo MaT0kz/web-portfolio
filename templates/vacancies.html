@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Вакансии работодателя</title>
+	</head>
+	<body>
+        <header class="vacancies-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+            <a class="home" href="{{ url_for('main_page_portfolio') }}">
+                <img src="{{ url_for('static', filename='static_images/home.svg') }}" width="57" height="46" alt="Домой">
+            </a>	
+        </header>
+        <main class="vacancies-main">
+            <div class="container">
+                <div class="title">
+                    {% if user.role == "person" %}
+                    <h1>Резюме</h1>
+                    {% elif user.role == "organisation" %}
+                    <h1>Вакансии</h1>
+                    {% endif %}
+                    {% if current_user.is_authenticated and current_user == user %}
+                        <a class="add" href="{{ url_for('add_vacancy_profile', unique_id=current_user.unique_id) }}">+</a>
+                    {% endif %}
+                </div>
+                <ul class="vacancies-list">
+                    {% for vacancy in vacancies %}
+                        <li class="vacancies-list-item">
+                            {% if user.role == "person" %}
+                            <a class="vacancy" href="{{ url_for('resume', id=vacancy.id) }}"></a>
+                            {% elif user.role == "organisation" %}
+                            <a class="vacancy" href="{{ url_for('vacancy', id=vacancy.id) }}"></a>
+                            {% endif %}
+                                <div class="text">
+                                    <h2>{{ vacancy.name }}</h2>
+                                    <p class="hidden">{{ vacancy.about }}</p>
+                                    <h3 class="hidden">Требования</h3>
+                                    <ul class="hidden">
+                                        {% for require in resume.requirements %}
+                                            <li>{{ require }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="img">
+                                    <img class="hidden-img" src="{{ url_for('static', filename='static_images/vacancy-preview.jpg') }}" width="456" height="378" alt="Превью вакансии">
+                                    <button class="hidden">Отправить портфолио</button>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </main>
+        <footer class="vacancies-footer"></footer>
+        <script src="js/script-vacancies.js"></script>
+    </body>
+</html>

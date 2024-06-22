@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&display=swap" rel="stylesheet">
+		<title>Dijital Portfolio Регистрация</title>
+	</head>
+	<body>
+        <header class="registration-header">
+			<a class="logo" href="{{ url_for('main_page_portfolio') }}">myArrange</a>
+        </header>
+        <main class="registration-main">
+            <form class="container" action="" method="post">
+                {{ form.hidden_tag() }}
+                <a class="back" href="{{ url_for('main_page_portfolio') }}">Назад</a>
+                <h1>Регистрация</h1>
+                <h2>Я:</h2>
+                {{ form.role(class="button-role", id="role", placeholder="Выберите роль") }}
+                <div class="name-surname">
+                    <div class="divname">
+                        <h3>Имя</h3>
+                        {{ form.name(class="name") }}
+                    </div>
+                    <div class="divsurname">
+                        <h3>Фамилия</h3>
+                        {{ form.surname(class="surname") }}
+                    </div>
+                </div>
+                <h3>Почта</h3>
+                {{ form.email(class="email") }}
+                <h3>Моя отрасль</h3>
+                {{ form.sphere(class="industry") }}
+                <a class="create-profile" href="#">Далее</a>
+                <div class="password-main hidden">
+                    <h1>Настраиваем доступ:</h1>
+                    <h2>Придумайте логин:</h2>
+                    {{ form.nickname(class="login", id="login", type="text", placeholder="Ваш логин") }}
+                    <div class="password">
+                        <div class="password-firstly">
+                            <h2>Пароль:</h2>
+                            {{ form.password(id="password-firstly", required=True, type="text", value="") }}
+                        </div>
+                        <div class="password-secondly">
+                            <h2>Повторите пароль:</h2>
+                            {{ form.password_again(id="password-firstly", required=True, type="text", value="") }}
+                        </div>
+                    </div>
+                    {{ form.submit(class="create-profile") }}
+                    {{ message }}
+                </div>
+            </form>
+        </main>
+        <script src="{{ url_for('static', filename='js/script-registration.js') }}"></script>
+    </body>
+</html>
